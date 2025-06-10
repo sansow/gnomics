@@ -1,24 +1,35 @@
-apiVersion: apps.openshift.io/v1
+apiVersion: machine.openshift.io/v1beta1
 kind: MachineSet
 metadata:
-  name: genomics-workers
+  name: genome-workers
   namespace: openshift-machine-api
 spec:
+  replicas: 3
   selector:
     matchLabels:
-      role: genomics
+      machine.openshift.io/cluster-api-machineset: genome-workers
   template:
     metadata:
       labels:
-        role: genomics
+        machine.openshift.io/cluster-api-machineset: genome-workers
       annotations:
-        machine.openshift.io/cluster-api-machine-role: genomics
+        machine.openshift.io/cluster-api-machine-role: genome
         chargeback.openshift.io/cost-center: "genomics-research"
         chargeback.openshift.io/owner: "team-genomics"
     spec:
       providerSpec:
         value:
-          instanceType: Standard_D8s_v3
+          apiVersion: machine.openshift.io/v1beta1
+          kind: AWSMachineProviderSpec  # Change this based on your cloud provider
+          instanceType: m5.large
+          osDisk:
+            diskSizeGB: 50  # Ensure this is greater than zero and less than 32768
+          region: us-east-1
+          iamInstanceProfile: worker-profile
+          userDataSecret:
+            name: worker-user-data
+          credentialsSecret:
+            name: aws-cloud-credentials
           tags:
             chargeback.openshift.io/cost-center: "genomics-research"
             chargeback.openshift.io/owner: "team-genomics"
