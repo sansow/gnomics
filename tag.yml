@@ -1,0 +1,21 @@
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+  name: genomics-node-tags
+  namespace: openshift-machine-api
+spec:
+  machineConfigPoolSelector:
+    matchLabels:
+      pools: genomics
+  config:
+    ignition:
+      version: 3.2.0
+    storage:
+      files:
+        - path: /etc/aro-tags.sh
+          mode: 0755
+          contents:
+            source: |
+              #!/bin/bash
+              oc label node $(hostname) chargeback.openshift.io/cost-center=genomics-research
+              oc label node $(hostname) chargeback.openshift.io/owner=team-genomics
