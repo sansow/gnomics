@@ -17,6 +17,6 @@ spec:
         machine.openshift.io/cluster-api-machineset: genome-workers
       containers:
         - name: parksmap
-          image: parksmap-application:latest
+          image: quay.io/openshiftroadshow/parksmap:1.3.0
           ports:
             - containerPort: 8080
