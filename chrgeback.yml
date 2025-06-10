@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Node
+metadata:
+  name: worker-0
+  labels:
+    chargeback.openshift.io/cost-center: "genomics-research"
+    chargeback.openshift.io/owner: "team-genomics"
