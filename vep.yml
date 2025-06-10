@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: parksmap-deployment
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: parksmap
+  template:
+    metadata:
+      labels:
+        app: parksmap
+    spec:
+      nodeSelector:
+        machine.openshift.io/cluster-api-machineset: genome-workers
+      containers:
+        - name: parksmap
+          image: parksmap-application:latest
+          ports:
+            - containerPort: 8080
